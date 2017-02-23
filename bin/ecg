@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+pushd $(dirname $0)/../_build/default/bin >/dev/null
+ECG_ESCRIPT=$PWD/ecg
+popd >/dev/null
+if [ ! -f "$ECG_ESCRIPT" ]; then
+    echo "$0: $ECG_ESCRIPT not found. Did you forget to \`rebar3 escriptize\`?"
+    exit 1
+fi
+
+MOD=$1
+shift
+
+if [ x"" = x"$MOD" ]; then
+    echo "$0: provide a module to generate the call graph for"
+    exit 2
+fi
+
+$ECG_ESCRIPT $MOD | grep -v "^$MOD:" | dot -Tpng > $MOD.png
+
