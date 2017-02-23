@@ -11,7 +11,7 @@ rebar3 escriptize
 ## Usage
 
 ```sh
-_build/default/bin/ecg lists | grep -v '^lists:' | dot -Tpng > lists.png
+bin/ecg lists
 open lists.png      # on macOS
 xdg-open lists.png  # on Linux
 ```
