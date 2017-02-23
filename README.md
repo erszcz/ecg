@@ -1,9 +1,17 @@
-ecg
-=====
+# ecg
 
-An OTP library
+Generate a GraphViz `.dot` file describing a module call graph.
 
-Build
------
+## Build
 
-    $ rebar3 compile
+```sh
+rebar3 escriptize
+```
+
+## Usage
+
+```sh
+_build/default/bin/ecg lists | grep -v '^lists:' | dot -Tpng > lists.png
+open lists.png      # on macOS
+xdg-open lists.png  # on Linux
+```
