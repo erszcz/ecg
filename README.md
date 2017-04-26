@@ -2,6 +2,8 @@
 
 Generate a GraphViz `.dot` file describing a module call graph.
 
+![Erlang lists module call graph](examples/lists-2inches.png)
+
 ## Build
 
 ```sh
