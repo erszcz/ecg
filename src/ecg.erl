@@ -20,11 +20,15 @@ get_calls(Modules) ->
 
 make_dot(Name, Edges) ->
     Dot = ["digraph ", Name, " {\n",
+           style_header(),
            make_dot_(Edges),
            "}\n"],
     %print("dot: ~p\n", [Dot]),
     %print("dot file: ~p\n", [DotFile]),
     print("~ts\n", [Dot]).
+
+style_header() ->
+    ["  ranksep=\"2.0 equally\";"].
 
 make_dot_(Edges) ->
     [ ["  ", format_mfa(From), " -> ", format_mfa(To), ";\n"]
