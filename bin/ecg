@@ -10,5 +10,5 @@ fi
 
 OUT=$1
 
-$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | dot -Tpng > $OUT.png
+$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | tee $OUT.dot | dot -Tpng > $OUT.png
 
