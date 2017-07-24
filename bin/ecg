@@ -8,13 +8,7 @@ if [ ! -f "$ECG_ESCRIPT" ]; then
     exit 1
 fi
 
-MOD=$1
-shift
+OUT=$1
 
-if [ x"" = x"$MOD" ]; then
-    echo "$0: provide a module to generate the call graph for"
-    exit 2
-fi
-
-$ECG_ESCRIPT $MOD | grep -v "^$MOD:" | dot -Tpng > $MOD.png
+$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | dot -Tpng > $OUT.png
 

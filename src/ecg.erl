@@ -4,18 +4,19 @@
 %% API exports
 -export([main/1]).
 
-main([ModS]) ->
-    {ok, Calls} = get_calls(ModS),
-    %print("calls: ~p\n", [Calls]),
-    ok = make_dot(ModS, Calls).
+main(Args) ->
+    [Name | Modules] = Args,
+    run(Name, Modules).
 
-get_calls(ModS) ->
-    Mod = list_to_atom(ModS),
-    ModFile = code:which(Mod),
+run(Name, Modules) ->
+    {ok, Calls} = get_calls(Modules),
+    %print("calls: ~p\n", [Calls]),
+    ok = make_dot(Name, Calls).
+
+get_calls(Modules) ->
     {ok, _} = xref:start(xr()),
-    {ok, _} = xref:add_module(xr(), ModFile),
-    {ok, _} = xref:q(xr(), lists:flatten(["E | ", ModS]),
-                     [{verbose, false}]).
+    [ {ok, _} = xref:add_module(xr(), M) || M <- Modules ],
+    {ok, _} = xref:q(xr(), "E", [{verbose, false}]).
 
 make_dot(Name, Edges) ->
     Dot = ["digraph ", Name, " {\n",
