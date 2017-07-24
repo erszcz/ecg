@@ -13,9 +13,17 @@ rebar3 escriptize
 ## Usage
 
 ```sh
-bin/ecg lists
+bin/ecg lists /Users/erszcz/apps/erlang/20.0/lib/erlang/lib/stdlib-3.4.1/ebin/lists.beam
 open lists.png      # on macOS
 xdg-open lists.png  # on Linux
+```
+
+```sh
+bin/ecg dtls /Users/erszcz/src/erlang/otp/lib/ssl/ebin/dtls_udp_listener.beam \
+             /Users/erszcz/src/erlang/otp/lib/ssl/ebin/dtls_connection.beam
+cat dtls.dot
+open dtls.png       # on macOS
+xdg-open dtls.png   # on Linux
 ```
 
 ## Similar tools
