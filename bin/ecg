@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-pushd $(dirname $0)/../_build/default/bin >/dev/null
-ECG_ESCRIPT=$PWD/ecg
+pushd $(dirname $0)/../_build/default >/dev/null
+ECG_LIB=$PWD/lib
+ECG_ESCRIPT=$PWD/bin/ecg
 popd >/dev/null
 if [ ! -f "$ECG_ESCRIPT" ]; then
     echo "$0: $ECG_ESCRIPT not found. Did you forget to \`rebar3 escriptize\`?"
@@ -10,5 +11,6 @@ fi
 
 OUT=$1
 
+export ERL_LIBS="$ECG_LIB:${ERL_LIBS}"
 $ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | tee $OUT.dot | dot -Tpng > $OUT.png
 
