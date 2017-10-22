@@ -9,9 +9,26 @@ main(Args) ->
     run(Name, Modules).
 
 run(Name, Modules) ->
+    check_modules(Modules),
     {ok, Calls} = get_calls(Modules),
     %print("calls: ~p\n", [Calls]),
     ok = make_dot(Name, Calls).
+
+check_modules(Modules) ->
+    case catch lists:all(fun
+                             (true) -> true;
+                                 (Err)  -> throw(Err)
+                         end, [ check_module(M) || M <- Modules ])
+    of
+        true -> ok;
+        {_, _} = Reason -> error(Reason, [Modules])
+    end.
+
+check_module(MPath) ->
+    case filelib:is_regular(MPath) of
+        true -> true;
+        false -> {cannot_access, MPath}
+    end.
 
 get_calls(Modules) ->
     {ok, _} = xref:start(xr()),
