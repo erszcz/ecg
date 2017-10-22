@@ -2,22 +2,23 @@
 -mode(compile).
 
 %% API exports
--export([main/1]).
+-export([main/1,
+         run/2]).
 
 main(Args) ->
     [Name | Modules] = Args,
-    run(Name, Modules).
+    print("~ts\n", [run(Name, Modules)]).
 
 run(Name, Modules) ->
     check_modules(Modules),
     {ok, Calls} = get_calls(Modules),
     %print("calls: ~p\n", [Calls]),
-    ok = make_dot(Name, Calls).
+    make_dot(Name, Calls).
 
 check_modules(Modules) ->
     case catch lists:all(fun
                              (true) -> true;
-                                 (Err)  -> throw(Err)
+                             (Err)  -> throw(Err)
                          end, [ check_module(M) || M <- Modules ])
     of
         true -> ok;
@@ -36,13 +37,10 @@ get_calls(Modules) ->
     {ok, _} = xref:q(xr(), "E", [{verbose, false}]).
 
 make_dot(Name, Edges) ->
-    Dot = ["digraph ", Name, " {\n",
-           style_header(),
-           make_dot_(Edges),
-           "}\n"],
-    %print("dot: ~p\n", [Dot]),
-    %print("dot file: ~p\n", [DotFile]),
-    print("~ts\n", [Dot]).
+    ["digraph ", Name, " {\n",
+     style_header(),
+     make_dot_(Edges),
+     "}\n"].
 
 style_header() ->
     ["  ranksep=\"2.0 equally\";"].
