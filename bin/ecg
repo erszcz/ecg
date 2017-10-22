@@ -12,5 +12,12 @@ fi
 FORMAT=${FORMAT:-png}
 OUT=$1
 
+set -o pipefail
+
 export ERL_LIBS="$ECG_LIB:${ERL_LIBS}"
-$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | tee $OUT.dot | dot -T$FORMAT > $OUT.$FORMAT
+TMPFILE=$(mktemp)
+$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' > $TMPFILE
+if [ $? -eq 0 ]; then
+    cat $TMPFILE | tee $OUT.dot | dot -T$FORMAT > $OUT.$FORMAT
+fi
+rm $TMPFILE
