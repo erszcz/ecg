@@ -9,8 +9,8 @@ if [ ! -f "$ECG_ESCRIPT" ]; then
     exit 1
 fi
 
+FORMAT=${FORMAT:-png}
 OUT=$1
 
 export ERL_LIBS="$ECG_LIB:${ERL_LIBS}"
-$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | tee $OUT.dot | dot -Tpng > $OUT.png
-
+$ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' | tee $OUT.dot | dot -T$FORMAT > $OUT.$FORMAT
