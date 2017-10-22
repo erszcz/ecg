@@ -43,7 +43,7 @@ make_dot(Name, Edges) ->
      "}\n"].
 
 style_header() ->
-    ["  ranksep=\"2.0 equally\";"].
+    ["  ranksep=\"2.0 equally\";\n"].
 
 make_dot_(Edges) ->
     [ ["  ", format_mfa(From), " -> ", format_mfa(To), ";\n"]
