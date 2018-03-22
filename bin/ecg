@@ -19,5 +19,7 @@ TMPFILE=$(mktemp)
 $ECG_ESCRIPT $@ | sed -n '/digraph/,$ p' > $TMPFILE
 if [ $? -eq 0 ]; then
     cat $TMPFILE | tee $OUT.dot | dot -T$FORMAT > $OUT.$FORMAT
+else
+    echo "$0: error generating graph for $2"
 fi
 rm $TMPFILE
